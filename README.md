@@ -70,9 +70,13 @@ git push -u origin main --force
 
 ## Build Artifacts
 
-A GitHub Actions workflow is configured in `.github/workflows/android-build.yml` to produce a debug APK artifact on pushes to `main`.
+A GitHub Actions workflow is configured in `.github/workflows/android-build.yml` to build the APK and publish it as a GitHub release asset.
 
-After the workflow completes, download the APK from the GitHub Actions artifacts list.
+After workflow completion, the latest APK is available directly at:
+
+```text
+https://github.com/Khan-4-at-Swiss/Motibilis-Checkmate/releases/latest/download/motibilis-checkmate.apk
+```
 
 To build locally from the project root:
 

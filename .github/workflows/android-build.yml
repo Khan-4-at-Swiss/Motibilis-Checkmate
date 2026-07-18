@@ -28,10 +28,14 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v4
         with:
-          api-level: 33
-          build-tools: '33.0.2'
+          packages: ''
+
+      - name: Install Android platform and build-tools
+        run: |
+          sdkmanager --install "platforms;android-36" "build-tools;36.0.0"
+          yes | sdkmanager --licenses
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
@@ -44,8 +48,11 @@ jobs:
       - name: Build debug APK
         run: ./gradlew :app:assembleDebug --no-daemon
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      - name: Create or update release with APK
+        uses: softprops/action-gh-release@v1
         with:
-          name: motibilis-apk
-          path: app/build/outputs/apk/**/app-*-debug*.apk
+          tag_name: latest
+          name: "Motibilis Checkmate APK"
+          files: app/build/outputs/apk/debug/app-debug.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
