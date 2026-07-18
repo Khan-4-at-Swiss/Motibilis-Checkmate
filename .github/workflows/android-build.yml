@@ -27,14 +27,6 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
 
-      - name: Install Gradle (download distribution)
-        run: |
-          wget https://services.gradle.org/distributions/gradle-8.4-bin.zip -O gradle.zip
-          sudo mkdir -p /opt/gradle
-          sudo unzip -q gradle.zip -d /opt/gradle
-          echo "/opt/gradle/gradle-8.4/bin" >> $GITHUB_PATH
-          rm gradle.zip
-
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2
         with:
@@ -42,12 +34,15 @@ jobs:
           build-tools: '33.0.2'
 
       - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Show Gradle and Java versions
         run: |
-          if [ -f ./gradlew ]; then chmod +x ./gradlew; fi
+          ./gradlew --version
+          java -version
 
       - name: Build debug APK
-        run: |
-          if [ -f ./gradlew ]; then ./gradlew :app:assembleDebug --no-daemon; else gradle :app:assembleDebug --no-daemon; fi
+        run: ./gradlew :app:assembleDebug --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4

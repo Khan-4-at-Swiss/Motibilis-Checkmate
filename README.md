@@ -68,13 +68,21 @@ If the remote has existing history and you want to overwrite it (destructive):
 git push -u origin main --force
 ```
 
-## Direct APK Download
+## Build Artifacts
 
-A prebuilt APK is included in this repository for convenience. You can download it directly to your phone from:
+A GitHub Actions workflow is configured in `.github/workflows/android-build.yml` to produce a debug APK artifact on pushes to `main`.
 
-https://raw.githubusercontent.com/Khan-4-at-Swiss/Motibilis-Checkmate/main/motibilis-checkmate.apk
+After the workflow completes, download the APK from the GitHub Actions artifacts list.
 
-Verify the file and only install APKs you trust. For release builds, prefer building locally and signing with your own keystore.
+To build locally from the project root:
+
+```bash
+./gradlew :app:assembleDebug
+```
+
+The generated APK is available at `app/build/outputs/apk/debug/app-debug.apk`.
+
+For release builds, sign your own APK with a keystore before distributing it.
 
 
 ## License
