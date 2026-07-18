@@ -68,6 +68,14 @@ If the remote has existing history and you want to overwrite it (destructive):
 git push -u origin main --force
 ```
 
+## Direct APK Download
+
+A prebuilt APK is included in this repository for convenience. You can download it directly to your phone from:
+
+https://raw.githubusercontent.com/Khan-4-at-Swiss/Motibilis-Checkmate/main/motibilis-checkmate.apk
+
+Verify the file and only install APKs you trust. For release builds, prefer building locally and signing with your own keystore.
+
 
 ## License
 
