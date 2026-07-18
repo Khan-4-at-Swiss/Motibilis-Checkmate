@@ -41,15 +41,21 @@ jobs:
         run: |
           chmod +x ./gradlew
           chmod +x ./gradlew.bat || true
-          if [ -f ./gradle/wrapper/gradle-wrapper.jar ]; then chmod +x ./gradle/wrapper/gradle-wrapper.jar || true; fi
+          mkdir -p ~/.gradle/wrapper/dists
+
+      - name: Download Gradle distribution
+        run: |
+          curl -L https://services.gradle.org/distributions/gradle-9.1.1-bin.zip -o /tmp/gradle-9.1.1-bin.zip
+          unzip -q /tmp/gradle-9.1.1-bin.zip -d /tmp
+          echo "GRADLE_EXE=/tmp/gradle-9.1.1/bin/gradle" >> $GITHUB_ENV
 
       - name: Show Gradle and Java versions
         run: |
-          ./gradlew --version
+          "$GRADLE_EXE" --version
           java -version
 
       - name: Build debug APK
-        run: ./gradlew :app:assembleDebug --no-daemon
+        run: "$GRADLE_EXE" :app:assembleDebug --no-daemon
 
       - name: Rename APK for release
         run: cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/motibilis-checkmate.apk
