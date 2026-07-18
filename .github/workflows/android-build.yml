@@ -37,9 +37,9 @@ jobs:
           yes | sdkmanager --licenses
           sdkmanager --install "platforms;android-36" "build-tools;36.0.0"
 
-      - name: Make gradlew executable
+      - name: Prepare wrapper files
         run: |
-          chmod +x ./gradlew
+          chmod +x ./gradlew || true
           chmod +x ./gradlew.bat || true
           mkdir -p ~/.gradle/wrapper/dists
 
