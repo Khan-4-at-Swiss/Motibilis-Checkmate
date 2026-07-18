@@ -72,11 +72,13 @@ git push -u origin main --force
 
 A GitHub Actions workflow is configured in `.github/workflows/android-build.yml` to build the APK and publish it as a GitHub release asset.
 
-After workflow completion, the latest APK is available directly at:
+After workflow completion, the latest APK will be available from the GitHub Releases page:
 
 ```text
-https://github.com/Khan-4-at-Swiss/Motibilis-Checkmate/releases/latest/download/motibilis-checkmate.apk
+https://github.com/Khan-4-at-Swiss/Motibilis-Checkmate/releases
 ```
+
+Once a release exists, the asset download URL will resolve there.
 
 To build locally from the project root:
 
