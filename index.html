@@ -85,10 +85,10 @@
                 <a href="#downloads" class="hover:text-gold-500 transition-colors duration-300">Downloads</a>
             </nav>
 
-            <!-- Premium Quick CTA -->
-            <button onclick="alert('To install the app, click the Gear/Settings icon in the top right corner of AI Studio, then select \'Download APK\'.')" class="relative inline-flex items-center justify-center px-5 py-2.5 overflow-hidden font-bold tracking-wider uppercase text-xs text-black bg-gold-500 rounded-lg group transition-all duration-300 ease-out glow-gold-hover hover:scale-[1.03]">
+            <!-- Premium Quick CTA: View Source -->
+            <button onclick="window.open('https://github.com/Khan-4-at-Swiss/Motibilis-Checkmate','_blank')" class="relative inline-flex items-center justify-center px-5 py-2.5 overflow-hidden font-bold tracking-wider uppercase text-xs text-black bg-gold-500 rounded-lg group transition-all duration-300 ease-out glow-gold-hover hover:scale-[1.03]">
                 <span class="relative flex items-center gap-2">
-                    <i class="fa-solid fa-download animate-bounce"></i> Download APK Instantly
+                    <i class="fa-brands fa-github"></i> View on GitHub
                 </span>
             </button>
         </div>
@@ -119,9 +119,9 @@
 
                 <!-- Interactive Dual CTA Buttons -->
                 <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-                    <button onclick="alert('To install the app, click the Gear/Settings icon in the top right corner of AI Studio, then select \'Download APK\'.')" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-gold-400 to-gold-600 hover:from-gold-500 hover:to-gold-700 text-black font-extrabold rounded-xl shadow-lg shadow-gold-500/20 glow-gold-hover flex items-center justify-center gap-3 transition-all duration-300 hover:translate-y-[-2px]">
-                        <i class="fa-solid fa-download text-lg animate-bounce"></i>
-                        <span>Download APK (Play Offline)</span>
+                    <button onclick="window.open('https://github.com/Khan-4-at-Swiss/Motibilis-Checkmate','_blank')" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-gold-400 to-gold-600 hover:from-gold-500 hover:to-gold-700 text-black font-extrabold rounded-xl shadow-lg shadow-gold-500/20 glow-gold-hover flex items-center justify-center gap-3 transition-all duration-300 hover:translate-y-[-2px]">
+                        <i class="fa-brands fa-github text-lg"></i>
+                        <span>View Source & Build</span>
                     </button>
                     <a href="#cinematics" class="w-full sm:w-auto px-8 py-4 bg-obsidian-800 border border-gold-500/20 hover:border-gold-500 text-white font-bold rounded-xl flex items-center justify-center gap-3 transition-all duration-300 hover:bg-obsidian-500">
                         <i class="fa-solid fa-play text-gold-500 text-lg"></i>
@@ -322,8 +322,8 @@
                             To install the app on your Android device, use the Settings menu (gear icon) in AI Studio and select 'Download APK'.
                         </p>
                     </div>
-                    <button onclick="alert('Please click the Gear/Settings icon in the top right corner of the AI Studio window, then select \'Download APK\' to get the verified installer.')" class="w-full py-4 bg-gold-500 hover:bg-gold-600 text-black text-center font-black rounded-xl uppercase tracking-wider transition-all shadow-lg shadow-gold-500/10 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-download"></i> How to Download APK
+                    <button onclick="window.open('https://github.com/Khan-4-at-Swiss/Motibilis-Checkmate','_blank')" class="w-full py-4 bg-gold-500 hover:bg-gold-600 text-black text-center font-black rounded-xl uppercase tracking-wider transition-all shadow-lg shadow-gold-500/10 flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-github"></i> Build From Source (GitHub)
                     </button>
                 </div>
 
@@ -340,8 +340,8 @@
         <!-- MASSIVE 3D ROTATING CREST IN THE BACKGROUND -->
         <div class="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none opacity-20 sm:opacity-25 lg:opacity-30">
             <div id="videoFrameContainer" class="relative w-[130vw] h-[130vw] md:w-[70vw] md:h-[70vw] max-w-[900px] max-h-[900px] rounded-full border border-gold-500/15 p-4 bg-gradient-to-b from-obsidian-950 to-black shadow-[0_0_100px_rgba(212,175,55,0.15)] transition-transform duration-100 ease-out flex items-center justify-center">
-                <!-- Using Logo for 3D Scroll Rotation as requested -->
-                <img id="reverseCrestFrame" src="motibilis.jpg" alt="Motibilis Logo" class="w-full h-full object-cover rounded-full border border-gold-500/10 transition-transform duration-75 ease-linear">
+                <!-- Video-backed crest scrubbed in reverse on scroll -->
+                <video id="bgVideo" src="motibilis.mp4" muted playsinline preload="metadata" class="w-full h-full object-cover rounded-full border border-gold-500/10 transition-transform duration-75 ease-linear"></video>
                 
                 <!-- Tactical Scanlines overlay -->
                 <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent pointer-events-none animate-pulse"></div>
@@ -453,7 +453,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const cinematicsSection = document.getElementById('cinematics');
             const videoFrameContainer = document.getElementById('videoFrameContainer');
-            const reverseCrestFrame = document.getElementById('reverseCrestFrame');
+            const bgVideo = document.getElementById('bgVideo');
             
             const telemetryFrame = document.getElementById('telemetryFrame');
             const telemetryTime = document.getElementById('telemetryTime');
@@ -493,20 +493,33 @@
                     videoFrameContainer.style.transform = `perspective(1200px) rotateY(${rotationAngle}deg) rotateX(${rotationX}deg) scale(${scaleFactor})`;
                 }
                 
-                // Rotate the inner image independently to simulate 3D frames
-                if (reverseCrestFrame) {
+                // Scrub the video in reverse according to scroll ratio
+                if (bgVideo && bgVideo.duration) {
+                    try {
+                        const targetTime = Math.max(0, Math.min(bgVideo.duration, bgVideo.duration * (1 - ratio)));
+                        bgVideo.currentTime = targetTime;
+                    } catch (e) {
+                        // some browsers restrict setting currentTime while not playing; ignore silently
+                    }
                     const frameRotation = (ratio * 360).toFixed(1);
-                    reverseCrestFrame.style.transform = `rotateZ(${frameRotation}deg)`;
+                    bgVideo.style.transform = `rotateZ(${frameRotation}deg)`;
                 }
                 
                 // Update Telemetry metrics in real-time
                 if (telemetryFrame) telemetryFrame.textContent = `FRAME ${currentFrame} / 24`;
                 if (telemetryTime) {
-                    let durationSec = 2.4;
-                    const elapsedMs = Math.round(reverseRatio * durationSec * 1000);
-                    const seconds = Math.floor(elapsedMs / 1000);
-                    const ms = String(elapsedMs % 1000).padStart(3, '0').substring(0, 2);
-                    telemetryTime.textContent = `00:${String(seconds).padStart(2, '0')}.${ms}`;
+                    if (bgVideo && bgVideo.duration) {
+                        const t = Math.max(0, Math.min(bgVideo.duration, bgVideo.duration * (1 - ratio)));
+                        const seconds = Math.floor(t);
+                        const ms = String(Math.floor((t - seconds) * 100)).padStart(2, '0');
+                        telemetryTime.textContent = `00:${String(seconds).padStart(2, '0')}.${ms}`;
+                    } else {
+                        let durationSec = 2.4;
+                        const elapsedMs = Math.round(reverseRatio * durationSec * 1000);
+                        const seconds = Math.floor(elapsedMs / 1000);
+                        const ms = String(elapsedMs % 1000).padStart(3, '0').substring(0, 2);
+                        telemetryTime.textContent = `00:${String(seconds).padStart(2, '0')}.${ms}`;
+                    }
                 }
                 if (telemetryRotate) telemetryRotate.textContent = `${rotationAngle}° DEG`;
                 if (telemetryScale) telemetryScale.textContent = `${scaleFactor}x`;

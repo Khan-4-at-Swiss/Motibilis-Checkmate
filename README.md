@@ -32,6 +32,43 @@ This project showcases a premium UI design featuring custom 3D-styled pieces, dy
 3. Sync Gradle dependencies.
 4. Run the app on an emulator or physical device (API level 24+).
 
+## Build APK Locally
+
+From the project root you can build a debug APK with Gradle:
+
+```bash
+./gradlew :app:assembleDebug
+```
+
+The generated APK will be at `app/build/outputs/apk/debug/app-debug.apk`.
+
+To produce a release build sign it with your keystore and run:
+
+```bash
+./gradlew :app:assembleRelease
+```
+
+## Pushing to GitHub
+
+If you want to push local changes to a GitHub repository:
+
+```powershell
+cd 'C:\path\to\motibilis-_-checkmate (1)'
+git init            # only if not already a repo
+git add .
+git commit -m "Your message"
+git remote add origin https://github.com/USERNAME/REPO.git
+git branch -M main
+git push -u origin main
+```
+
+If the remote has existing history and you want to overwrite it (destructive):
+
+```powershell
+git push -u origin main --force
+```
+
+
 ## License
 
 This project is licensed under the MIT License.
