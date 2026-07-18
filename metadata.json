@@ -1,0 +1,6 @@
+{
+  "name": "Motibilis | Checkmate",
+  "description": "A heavily customizable, feature-rich premium chess game with local AI, Wi-Fi local multiplayer, and luxury gold & black visual animations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
