@@ -27,10 +27,13 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
 
-      - name: Install Gradle (apt fallback when wrapper missing)
+      - name: Install Gradle (download distribution)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y gradle
+          wget https://services.gradle.org/distributions/gradle-8.4-bin.zip -O gradle.zip
+          sudo mkdir -p /opt/gradle
+          sudo unzip -q gradle.zip -d /opt/gradle
+          echo "/opt/gradle/gradle-8.4/bin" >> $GITHUB_PATH
+          rm gradle.zip
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2
